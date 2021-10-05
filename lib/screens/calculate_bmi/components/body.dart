@@ -190,6 +190,7 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
                                       child: Column(
                                         children: [
                                           Container(
+                                            height: 50,
                                               width: double.infinity,
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -203,7 +204,7 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
                                                       ['range_status'],
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 18,
+                                                      fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w300),
                                                 ),
@@ -226,6 +227,7 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
                                       child: Column(
                                         children: [
                                           Container(
+                                            height: 50,
                                               width: double.infinity,
                                               padding:
                                                   const EdgeInsets.symmetric(

@@ -39,6 +39,8 @@ class _ProfileBodyState extends State<ProfileBody> {
   String _user_phone_number = '';
 
   String user_profile_image = '';
+
+  bool _user_gender = false;
   bool loading = false;
 
   Future<void> _removeAuthToken() async {
@@ -78,17 +80,20 @@ class _ProfileBodyState extends State<ProfileBody> {
     var responseBody = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      loading = false;
       var user = responseBody['result']['user'];
 
+      print(user);
       setState(() {
+        loading = false;
         _user_name = user['user_name'];
         _user_family = user['user_family'];
         _user_phone_number = user['user_phone_number'];
         user_profile_image = user['user_profile_image'];
       });
     } else {
-      loading = false;
+      setState(() {
+        loading = false;
+      });
       SnackBar(
         content: Row(
           children: [Text(responseBody['errors'][0]['message'])],
@@ -114,6 +119,7 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
+    var profileImageLink = !loading ? user_profile_image : '';
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -122,46 +128,42 @@ class _ProfileBodyState extends State<ProfileBody> {
             SizedBox(
               height: 40,
             ),
-            if (!loading)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      print('Change Image');
-                      pickImage();
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      radius: SizeConfig.screenWidth * 0.08,
-                      backgroundImage: NetworkImage(
-                          '$API_BASE_URL/profiles/$user_profile_image'),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            !loading
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Text(
-                          '$_user_name $_user_family',
-                          maxLines: 2,
-                          softWrap: true,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                          ),
-                        ),
+                      InkWell(
+                        onTap: () {},
+                        child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: SizeConfig.screenWidth * 0.08,
+                            backgroundImage: NetworkImage(
+                                '$API_BASE_URL/profiles/$profileImageLink',
+                                scale: 1)),
                       ),
-                      Text(_user_phone_number)
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Text(
+                              '$_user_name $_user_family',
+                              maxLines: 2,
+                              softWrap: true,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                          Text(_user_phone_number)
+                        ],
+                      )
                     ],
                   )
-                ],
-              )
-            else
-              CircularProgressIndicator(),
+                : Center(child: CircularProgressIndicator()),
             SizedBox(
               height: 40,
             ),

@@ -120,11 +120,24 @@ class _HomePageBodyState extends State<HomePageBody> {
         .catchError((err) => {});
   }
 
+  String userDefaultProfile() {
+    var defaultManProfileImage =
+        API_BASE_URL + '/thumbnails/' + 'Okwd0n-1633456912460.png';
+
+    var defaultWomanProfileImage =
+        API_BASE_URL + '/thumbnails/' + 'OAtZVi-1633456739151.png';
+
+    return userObject['user_gender'] == 1
+        ? defaultWomanProfileImage
+        : defaultManProfileImage;
+  }
+
   @override
   Widget build(BuildContext context) {
     var status = !loading ? rangeObject['range_status'] : 'نامشخص';
     var profileImageLink = !loading ? userObject['user_profile_image'] : '';
     var rangeStatus = 'وضعیت: ' + status;
+
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: bgLightColor,
@@ -156,7 +169,8 @@ class _HomePageBodyState extends State<HomePageBody> {
                               backgroundColor: Colors.red,
                               radius: SizeConfig.screenWidth * 0.05,
                               backgroundImage: NetworkImage(
-                                  '$API_BASE_URL/profiles/$profileImageLink')),
+                                   userObject['user_profile_image'] != null? '$API_BASE_URL/profiles/$profileImageLink' : userDefaultProfile(),
+                                  scale: 1)),
                           SizedBox(
                             width: 10,
                           ),
@@ -471,6 +485,7 @@ class VideoBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var thumbnailFileName = video['video_thmubnail'];
+
     return InkWell(
       onTap: press,
       child: Container(

@@ -95,13 +95,15 @@ class _BodyState extends State<Body> {
     );
 
     var responseBody = jsonDecode(response.body);
+
+    
     if (response.statusCode == 200) {
       _btnController.success();
 
       _setPhoneNumber(phonNumber: phoneNumber);
 
       buildSnackBar(
-              text: Text('ثبت نام شما با موفقیت انجام شد'),
+              text: 'ثبت نام شما با موفقیت انجام شد',
               iconColor: primaryColor,
               icon: Icons.app_registration_outlined)
           .show(context);
