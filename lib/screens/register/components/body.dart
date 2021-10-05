@@ -96,7 +96,6 @@ class _BodyState extends State<Body> {
 
     var responseBody = jsonDecode(response.body);
 
-    
     if (response.statusCode == 200) {
       _btnController.success();
 
@@ -132,8 +131,6 @@ class _BodyState extends State<Body> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    print(SizeConfig.screenWidth);
   }
 
   @override
@@ -176,25 +173,15 @@ class _BodyState extends State<Body> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          SizeConfig.screenWidth > 400
-                              ? Row(
-                                  children: [
-                                    Flexible(child: buildNameFormField()),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(child: buildFamilyFormField())
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    buildNameFormField(),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    buildFamilyFormField()
-                                  ],
-                                ),
+                          Column(
+                            children: [
+                              buildNameFormField(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildFamilyFormField()
+                            ],
+                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -203,277 +190,149 @@ class _BodyState extends State<Body> {
                             height: 10,
                           ),
 
-                          SizeConfig.screenWidth > 480
-                              ? Row(
+                          Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Flexible(
-                                        child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 15),
-                                            width: double.infinity,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.07,
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey
-                                                    .withOpacity(0.3),
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10.0)),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'تولد',
-                                                  style: TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    Jalali? picked =
-                                                        await showPersianDatePicker(
-                                                      context: context,
-                                                      initialDate: Jalali.now(),
-                                                      firstDate:
-                                                          Jalali(1330, 8),
-                                                      lastDate: Jalali(1401, 9),
-                                                    );
-                                                    var day = picked?.day;
-                                                    var month = picked?.month;
-                                                    var year = picked?.year;
-                                                    var full = picked
-                                                        ?.formatFullDate();
-
-                                                    setState(() {
-                                                      birthDayLabel = full;
-                                                      birthDay =
-                                                          '$day - $month - $year';
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                      birthDay == ''
-                                                          ? 'انتخاب تاریخ'
-                                                          : birthDayLabel,
-                                                      style: TextStyle(
-                                                          color: bgButtonYellow,
-                                                          fontSize: 12),
-                                                      textAlign:
-                                                          TextAlign.right,
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow
-                                                          .ellipsis),
-                                                )
-                                              ],
-                                            ))),
-                                    SizedBox(
-                                      width: 10,
+                                    Text(
+                                      'جنسیت',
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                     Flexible(
-                                        child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Text(
-                                            'جنسیت',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                          Flexible(
-                                              child: GroupButton(
-                                            isRadio: true,
-                                            selectedButton: 0,
-                                            onSelected:
-                                                (int index, isSelected) {
-                                              setState(() {
-                                                gender = index;
-                                              });
-                                            },
-                                            buttons: ["مرد", "زن"],
-                                            unselectedColor: bgDarkColor,
-                                            unselectedTextStyle:
-                                                TextStyle(color: Colors.white),
-                                            selectedTextStyle:
-                                                TextStyle(color: Colors.black),
-                                            selectedColor: bgButtonYellow,
-                                            spacing: 30,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          )),
-                                        ],
-                                      ),
-                                    ))
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 40),
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'جنسیت',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                          Flexible(
-                                              child: GroupButton(
-                                            isRadio: true,
-                                            selectedButton: 0,
-                                            onSelected:
-                                                (int index, isSelected) {
-                                              setState(() {
-                                                gender = index;
-                                              });
-                                            },
-                                            buttons: ["مرد", "زن"],
-                                            unselectedColor: bgDarkColor,
-                                            unselectedTextStyle:
-                                                TextStyle(color: Colors.white),
-                                            selectedTextStyle:
-                                                TextStyle(color: Colors.white),
-                                            selectedColor: primaryColor,
-                                            spacing: 30,
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          )),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 40, vertical: 5),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.3),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0)),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              'تاریخ تولد',
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            Container(
-                                              child: birthDay == ''
-                                                  ? TextButton(
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(
-                                                            Icons
-                                                                .calendar_today,
-                                                            color: Colors.black,
-                                                            size: 20,
-                                                          ),
-                                                          SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          Text(
-                                                            'انتخاب تاریخ',
-                                                            style: TextStyle(
-                                                                color:
-                                                                    bgDarkColor,
-                                                                fontSize: 12),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      onPressed: () async {
-                                                        Jalali? picked =
-                                                            await showPersianDatePicker(
-                                                          context: context,
-                                                          initialDate:
-                                                              Jalali.now(),
-                                                          firstDate:
-                                                              Jalali(1330, 8),
-                                                          lastDate:
-                                                              Jalali(1401, 9),
-                                                        );
-                                                        var day = picked?.day;
-                                                        var month =
-                                                            picked?.month;
-                                                        var year = picked?.year;
-                                                        var full = picked
-                                                            ?.formatFullDate();
-
-                                                        setState(() {
-                                                          birthDayLabel = full;
-                                                          birthDay =
-                                                              '$day - $month - $year';
-                                                        });
-                                                      },
-                                                    )
-                                                  : Row(
-                                                      children: [
-                                                        Text(birthDayLabel),
-                                                        IconButton(
-                                                          tooltip:
-                                                              'تغییر تاریخ',
-                                                          onPressed: () async {
-                                                            Jalali? picked =
-                                                                await showPersianDatePicker(
-                                                              context: context,
-                                                              initialDate:
-                                                                  Jalali.now(),
-                                                              firstDate: Jalali(
-                                                                  1330, 8),
-                                                              lastDate: Jalali(
-                                                                  1401, 9),
-                                                            );
-                                                            var day =
-                                                                picked?.day;
-                                                            var month =
-                                                                picked?.month;
-                                                            var year =
-                                                                picked?.year;
-                                                            var full = picked
-                                                                ?.formatFullDate();
-
-                                                            setState(() {
-                                                              birthDayLabel =
-                                                                  full;
-                                                              birthDay =
-                                                                  '$day - $month - $year';
-                                                            });
-                                                          },
-                                                          icon: Icon(Icons
-                                                              .change_circle_outlined),
-                                                        )
-                                                      ],
-                                                    ),
-                                            )
-                                          ],
-                                        ))
+                                        child: GroupButton(
+                                      isRadio: true,
+                                      selectedButton: 0,
+                                      onSelected: (int index, isSelected) {
+                                        setState(() {
+                                          gender = index;
+                                        });
+                                      },
+                                      buttons: ["مرد", "زن"],
+                                      unselectedColor: bgDarkColor,
+                                      unselectedTextStyle:
+                                          TextStyle(color: Colors.white),
+                                      selectedTextStyle:
+                                          TextStyle(color: Colors.white),
+                                      selectedColor: primaryColor,
+                                      spacing: 30,
+                                      borderRadius: BorderRadius.circular(5),
+                                    )),
                                   ],
                                 ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40, vertical: 5),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      borderRadius:
+                                          BorderRadius.circular(10.0)),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'تاریخ تولد',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      Container(
+                                        child: birthDay == ''
+                                            ? TextButton(
+                                                child: Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.calendar_today,
+                                                      color: Colors.black,
+                                                      size: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 5,
+                                                    ),
+                                                    Text(
+                                                      'انتخاب تاریخ',
+                                                      style: TextStyle(
+                                                          color: bgDarkColor,
+                                                          fontSize: 12),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ],
+                                                ),
+                                                onPressed: () async {
+                                                  Jalali? picked =
+                                                      await showPersianDatePicker(
+                                                    context: context,
+                                                    initialDate: Jalali.now(),
+                                                    firstDate: Jalali(1330, 8),
+                                                    lastDate: Jalali(1401, 9),
+                                                  );
+                                                  var day = picked?.day;
+                                                  var month = picked?.month;
+                                                  var year = picked?.year;
+                                                  var full =
+                                                      picked?.formatFullDate();
+
+                                                  setState(() {
+                                                    birthDayLabel = full;
+                                                    birthDay =
+                                                        '$day - $month - $year';
+                                                  });
+                                                },
+                                              )
+                                            : Row(
+                                                children: [
+                                                  Text(birthDayLabel),
+                                                  IconButton(
+                                                    tooltip: 'تغییر تاریخ',
+                                                    onPressed: () async {
+                                                      Jalali? picked =
+                                                          await showPersianDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            Jalali.now(),
+                                                        firstDate:
+                                                            Jalali(1330, 8),
+                                                        lastDate:
+                                                            Jalali(1401, 9),
+                                                      );
+                                                      var day = picked?.day;
+                                                      var month = picked?.month;
+                                                      var year = picked?.year;
+                                                      var full = picked
+                                                          ?.formatFullDate();
+
+                                                      setState(() {
+                                                        birthDayLabel = full;
+                                                        birthDay =
+                                                            '$day - $month - $year';
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons
+                                                        .change_circle_outlined),
+                                                  )
+                                                ],
+                                              ),
+                                      )
+                                    ],
+                                  ))
+                            ],
+                          ),
                           SizedBox(
                             height: 10,
                           ),
@@ -482,26 +341,15 @@ class _BodyState extends State<Body> {
                             height: 10,
                           ),
 
-                          SizeConfig.screenWidth > 480
-                              ? Row(
-                                  children: [
-                                    Flexible(child: buildPasswordFormField()),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(
-                                        child: buildPasswordConfirmFormField())
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    buildPasswordFormField(),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    buildPasswordConfirmFormField()
-                                  ],
-                                ),
+                          Column(
+                            children: [
+                              buildPasswordFormField(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              buildPasswordConfirmFormField()
+                            ],
+                          ),
                           SizedBox(
                             height: 10,
                           ),

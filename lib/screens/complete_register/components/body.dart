@@ -439,23 +439,6 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                               disease_liver: disease_liver,
                               disease_kidney: disease_kidney,
                               token: token);
-                          print(age);
-                          print(height);
-                          print(weight);
-                          print('disease_diabet');
-                          print(disease_diabet);
-                          print('disease_lung');
-                          print(disease_lung);
-                          print('disease_liver');
-                          print(disease_liver);
-
-                          print('disease_kidney');
-                          print(disease_kidney);
-                          print('disease_heart');
-                          print(disease_heart);
-
-                          print(exercise_days);
-                          print(exercise_hours);
 
                           _btnController.success();
 

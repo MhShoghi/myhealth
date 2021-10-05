@@ -101,8 +101,6 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
 
     var responseBody = jsonDecode(response.body);
 
-    print(responseBody);
-
     if (response.statusCode == 200) {
       setState(() {
         rangeObject.addAll(responseBody['result']['range']);
@@ -289,7 +287,7 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                           Flexible(
                               child: buildProfileDetailsItem(
                                   label: 'ویدیوهای من',
-                                  value: '۱۲ ویدیو',
+                                  value: '۷ ویدیو',
                                   icon: Icons.video_collection,
                                   textColor: Colors.blue,
                                   color: Colors.blue.withOpacity(0.4))),
@@ -299,7 +297,7 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                           Flexible(
                               child: buildProfileDetailsItem(
                                   label: 'برنامه های من',
-                                  value: '۱۲ برنامه',
+                                  value: '۴ برنامه',
                                   icon: Icons.restaurant,
                                   textColor: Color.fromRGBO(175, 98, 15, 1),
                                   color: orangeColor.withOpacity(0.4))),

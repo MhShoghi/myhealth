@@ -40,7 +40,6 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
             Navigator.pop(context);
-            print('back');
           },
           color: Colors.black,
         ),

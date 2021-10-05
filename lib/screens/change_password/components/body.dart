@@ -49,9 +49,6 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
 
     var responseBody = jsonDecode(response.body);
 
-    print('responseBody');
-    print(responseBody);
-
     if (response.statusCode == 200) {
       _btnController.success();
 

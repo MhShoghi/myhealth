@@ -1,21 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/routes/routes.dart';
 import 'package:health/screens/change_bmi/change_bmi_screen.dart';
 import 'package:health/screens/change_password/change_password_screen.dart';
-
 import 'package:health/screens/profile_details/profile_details_screen.dart';
-
 import 'package:health/size_config.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snack/snack.dart';
-
 import '../../../config/constants.dart';
 
 class ProfileBody extends StatefulWidget {
@@ -49,7 +44,6 @@ class _ProfileBodyState extends State<ProfileBody> {
   }
 
   Future pickImage() async {
-    print('Pick Image');
     try {
       // final image = await ImagePicker()
 
@@ -59,7 +53,6 @@ class _ProfileBodyState extends State<ProfileBody> {
       //   this.image = imageTemporary;
       // });
 
-      // print(image);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -82,7 +75,6 @@ class _ProfileBodyState extends State<ProfileBody> {
     if (response.statusCode == 200) {
       var user = responseBody['result']['user'];
 
-      print(user);
       setState(() {
         loading = false;
         _user_name = user['user_name'];

@@ -17,9 +17,7 @@ class _BodyState extends State<Body> {
     final SharedPreferences prefs = await _prefs;
 
     if (!prefs.containsKey('auth_token')) {
-      prefs.setString('auth_token', '').then((bool success) {
-        print('auth_token now generated');
-      });
+      prefs.setString('auth_token', '').then((bool success) {});
     }
   }
 

@@ -83,8 +83,6 @@ class _LoginBodyState extends State<LoginBody> {
 
     var decodedResponse = jsonDecode(response.body);
 
-    print(response.statusCode);
-
     if (response.statusCode == 200 &&
         decodedResponse['userProfileIsComplete'] == true) {
       _btnController.success();
