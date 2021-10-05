@@ -16,20 +16,26 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int currentPage = 0;
   List<Map<String, String>> splashData = [
-    {
-      "text": "Welcome to Tokoto, Let's shop!",
-      "image": "assets/images/splash_1.png"
-    },
+    {"text": "به سلامت من خوش آمدید", "image": "assets/images/splash_1.png"},
     {
       "text":
-          "We help people connect with store \naround United State of America",
+          "ما به شما کمک میکنیم بدنی سالم داشته باشید \nورزش کنید و غذای سالم میل کنید",
       "image": "assets/images/splash_2.png"
     },
     {
-      "text": "We show the easy way to shop. \nJust stay at home with us",
+      "text":
+          "ارائه انواع برنامه های غذایی و تمرینات ورزشی \nبا ما در مسیر تحول همراه باشید",
       "image": "assets/images/splash_3.png"
     },
   ];
+
+  void checkInternetConnection() async {}
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,6 +61,7 @@ class _BodyState extends State<Body> {
                     },
                     itemCount: splashData.length,
                     itemBuilder: (context, index) => SplashContent(
+                          text: splashData[index]['text'].toString(),
                           image: splashData[index]['image'].toString(),
                         ))),
             Expanded(
@@ -63,7 +70,6 @@ class _BodyState extends State<Body> {
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(20)),
                 child: Column(children: [
-                  Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(

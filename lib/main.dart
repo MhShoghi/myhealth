@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:health/config/colors.dart';
 import 'package:health/screens/welcome/welcome_screen.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
+
 
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([

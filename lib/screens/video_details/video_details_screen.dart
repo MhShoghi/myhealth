@@ -35,15 +35,14 @@ class _VideoDetailsScreenState extends State<VideoDetailsScreen> {
       appBar: AppBar(
         backgroundColor: bgLightColor,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            color: Colors.black,
-          ),
+        leading: IconButton(
+          disabledColor: Colors.red,
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+            print('back');
+          },
+          color: Colors.black,
         ),
       ),
       body: VideoDetailsBody(video: video),

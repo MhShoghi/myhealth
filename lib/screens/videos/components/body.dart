@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:health/config/colors.dart';
 import 'package:health/config/constants.dart';
-import 'package:health/models/Video.dart';
+
 import 'package:health/screens/home_page/components/body.dart';
 import 'package:health/screens/video_details/video_details_screen.dart';
 import 'package:health/size_config.dart';
@@ -116,7 +117,9 @@ class _VideoBodyState extends State<VideoBody> {
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 2 / 3,
+                              childAspectRatio: SizeConfig.screenWidth > 420
+                                  ? 2 / 2.5
+                                  : 2 / 4,
                               crossAxisSpacing: 20.0,
                               mainAxisSpacing: 20.0,
                             ),
@@ -197,26 +200,119 @@ class VideoItem extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       video['video_name'],
-                      style: TextStyle(),
+                      style: TextStyle(fontSize: 14),
                     ),
                     SizedBox(
                       height: 5,
                     ),
+                    Text(
+                      video['video_description'] + video['video_description'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.timer),
-                        Text(video['video_length'].toStringAsFixed(1)),
-                        SizedBox(
-                          width: 5,
+                        Expanded(
+                          child: Container(
+                            height: 30,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: video['video_affects'].length,
+                                itemBuilder: (ctx, index) {
+                                  return Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color:
+                                              bgButtonYellow.withOpacity(0.4)),
+                                      margin: const EdgeInsets.only(
+                                          top: 3, left: 5),
+                                      child:
+                                          Text(video['video_affects'][index]));
+                                }),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Wrap(
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.fitness_center,
+                                color: bgDarkColor,
+                                size: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  video['video_exercise_time'].toString(),
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text('ثانیه')
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.timer_outlined,
+                                color: bgDarkColor,
+                                size: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  video['video_length'].toStringAsFixed(1),
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 3,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                'ثانیه',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )
                       ],
                     )
                   ],

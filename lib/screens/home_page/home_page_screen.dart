@@ -92,6 +92,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
+          selectedItemColor: primaryColor,
           onTap: (int index) {
             setState(() {
               _currentIndex = index;

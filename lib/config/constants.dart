@@ -19,7 +19,7 @@ const String kNewPasswordAndNewPasswordConfirmMatchPassError =
     'رمز عبور جدید با تکرار آن مطابقت ندارد';
 
 const String kMatchPassError = "رمز عبور با تکرار آن مطابقت ندارد";
-const String kShortPassError = 'Password is too short';
+const String kVerificationCodeNullError = 'کد تاییدیه ۵ رقمی را وارد کنید';
 
 const String kAddressNullError = 'Please enter your address';
 

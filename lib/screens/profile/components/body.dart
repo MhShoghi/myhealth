@@ -1,14 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:health/config/colors.dart';
+import 'package:health/routes/routes.dart';
 import 'package:health/screens/change_bmi/change_bmi_screen.dart';
 import 'package:health/screens/change_password/change_password_screen.dart';
 
 import 'package:health/screens/profile_details/profile_details_screen.dart';
-import 'package:health/screens/splash/splash_screen.dart';
+
 import 'package:health/size_config.dart';
 import 'package:http/http.dart' as http;
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snack/snack.dart';
 
@@ -25,17 +29,38 @@ class _ProfileBodyState extends State<ProfileBody> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   // Values
+
+  File? image;
   // ignore: non_constant_identifier_names
   String _user_name = '';
   // ignore: non_constant_identifier_names
   String _user_family = '';
 
   String _user_phone_number = '';
+
+  String user_profile_image = '';
   bool loading = false;
 
   Future<void> _removeAuthToken() async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString('auth_token', '').then((bool success) => {});
+  }
+
+  Future pickImage() async {
+    print('Pick Image');
+    try {
+      // final image = await ImagePicker()
+
+      // if (image == null) return;
+      // final imageTemporary = File(image.path);
+      // setState(() {
+      //   this.image = imageTemporary;
+      // });
+
+      // print(image);
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
   }
 
   Future<void> fetchUserData({token}) async {
@@ -60,6 +85,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         _user_name = user['user_name'];
         _user_family = user['user_family'];
         _user_phone_number = user['user_phone_number'];
+        user_profile_image = user['user_profile_image'];
       });
     } else {
       loading = false;
@@ -96,23 +122,46 @@ class _ProfileBodyState extends State<ProfileBody> {
             SizedBox(
               height: 40,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                !loading
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            '$_user_name $_user_family',
-                            style: TextStyle(color: Colors.black, fontSize: 28),
+            if (!loading)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      print('Change Image');
+                      pickImage();
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.red,
+                      radius: SizeConfig.screenWidth * 0.08,
+                      backgroundImage: NetworkImage(
+                          '$API_BASE_URL/profiles/$user_profile_image'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text(
+                          '$_user_name $_user_family',
+                          maxLines: 2,
+                          softWrap: true,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
                           ),
-                          Text(_user_phone_number)
-                        ],
-                      )
-                    : CircularProgressIndicator()
-              ],
-            ),
+                        ),
+                      ),
+                      Text(_user_phone_number)
+                    ],
+                  )
+                ],
+              )
+            else
+              CircularProgressIndicator(),
             SizedBox(
               height: 40,
             ),
@@ -144,7 +193,7 @@ class _ProfileBodyState extends State<ProfileBody> {
                   press: () {
                     _removeAuthToken();
 
-                    Navigator.of(context).push(_logOutRoute());
+                    Navigator.of(context).push(loginRoute());
                   },
                 )
               ],
@@ -176,22 +225,6 @@ Route _createRoute() {
 Route _changeBmiRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => ChangeBmiScreen(),
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
-      const end = Offset.zero;
-      final tween = Tween(begin: begin, end: end);
-      final offsetAnimation = animation.drive(tween);
-      return SlideTransition(
-        position: offsetAnimation,
-        child: child,
-      );
-    },
-  );
-}
-
-Route _logOutRoute() {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => SplashScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

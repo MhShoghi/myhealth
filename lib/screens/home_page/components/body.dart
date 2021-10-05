@@ -1,13 +1,13 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/config/constants.dart';
 import 'package:health/screens/diets/diets_screen.dart';
 import 'package:health/screens/ranges/ranges_screen.dart';
+import 'package:health/screens/video_details/components/video_tag_item.dart';
 import 'package:health/screens/video_details/video_details_screen.dart';
 import 'package:health/screens/videos/videos_screen.dart';
+import 'package:health/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:http/http.dart' as http;
@@ -22,15 +22,17 @@ class HomePageBody extends StatefulWidget {
 
 class _HomePageBodyState extends State<HomePageBody> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  // Attributes
   Map<String, dynamic> userObject = {};
   Map<String, dynamic> rangeObject = {};
+  late List videosList = [];
 
   double _value = 10;
   bool loadingVideos = false;
   bool loading = false;
-  late List videosList = [];
-  var _userName;
 
+  // Functions
   Future<String> _getAuthToken() async {
     SharedPreferences prefs = await _prefs;
     return prefs.getString('auth_token').toString();
@@ -120,7 +122,8 @@ class _HomePageBodyState extends State<HomePageBody> {
 
   @override
   Widget build(BuildContext context) {
-    var status = rangeObject['range_status'] ?? null;
+    var status = !loading ? rangeObject['range_status'] : 'نامشخص';
+    var profileImageLink = !loading ? userObject['user_profile_image'] : '';
     var rangeStatus = 'وضعیت: ' + status;
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -144,25 +147,41 @@ class _HomePageBodyState extends State<HomePageBody> {
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Row(
                         children: [
-                          Text(
-                            'سلام،',
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          CircleAvatar(
+                              backgroundColor: Colors.red,
+                              radius: SizeConfig.screenWidth * 0.05,
+                              backgroundImage: NetworkImage(
+                                  '$API_BASE_URL/profiles/$profileImageLink')),
+                          SizedBox(
+                            width: 10,
                           ),
-                          !loading
-                              ? Text(
-                                  userObject['user_name'] ?? '',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w300),
-                                )
-                              : Center(
-                                  child: CircularProgressIndicator(
-                                  strokeWidth: 1,
-                                )),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'سلام،',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                              ),
+                              !loading
+                                  ? Text(
+                                      userObject['user_name'] ?? '',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.w300),
+                                    )
+                                  : Center(
+                                      child: CircularProgressIndicator(
+                                      strokeWidth: 1,
+                                    )),
+                            ],
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -236,7 +255,7 @@ class _HomePageBodyState extends State<HomePageBody> {
                                               ? redColor
                                               : primaryColor),
                                   child: Text(
-                                    rangeStatus.isNotEmpty ? rangeStatus : " ",
+                                    rangeStatus,
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -350,22 +369,36 @@ class _HomePageBodyState extends State<HomePageBody> {
                       ),
                       !loadingVideos
                           ? Container(
-                              height: size.height * 0.26,
+                              height: SizeConfig.screenWidth > 420
+                                  ? getProportionateScreenWidth(300)
+                                  : getProportionateScreenWidth(350),
                               child: ListView.builder(
                                   scrollDirection: Axis.horizontal,
                                   itemCount: videosList.length,
                                   itemBuilder: (ctx, index) {
-                                    return VideoBox(
-                                        size: size,
-                                        video: videosList[index],
-                                        press: () => Navigator.of(context).push(
-                                            _videoDetailsScreenRoute(
-                                                video: videosList[index])));
+                                    return Column(
+                                      children: [
+                                        VideoBox(
+                                            size: size,
+                                            video: videosList[index],
+                                            press: () => Navigator.of(context)
+                                                .push(_videoDetailsScreenRoute(
+                                                    video: videosList[index]))),
+                                      ],
+                                    );
                                   }))
                           : CircularProgressIndicator()
                     ],
                   )
-                : Center(child: CircularProgressIndicator()),
+                : Container(
+                    height: SizeConfig.screenHeight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text('کمی صبر کنید...')
+                      ],
+                    )),
           ),
         )),
       ),
@@ -441,7 +474,11 @@ class VideoBox extends StatelessWidget {
     return InkWell(
       onTap: press,
       child: Container(
-        width: size.width * 0.4,
+        width:
+            SizeConfig.screenWidth > 420 ? size.width * 0.4 : size.width * 0.6,
+        height: SizeConfig.screenWidth > 420
+            ? size.width * 0.15
+            : size.height * 0.45,
         margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -451,13 +488,15 @@ class VideoBox extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: size.height * 0.1,
+              height: SizeConfig.screenWidth > 420
+                  ? size.width * 0.15
+                  : size.width * 0.35,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   image: DecorationImage(
-                      image: AssetImage(
+                      image: NetworkImage(
                         '$API_BASE_URL/thumbnails/$thumbnailFileName',
                       ),
                       fit: BoxFit.cover)),
@@ -482,24 +521,100 @@ class VideoBox extends StatelessWidget {
                     style: TextStyle(fontSize: 12, color: Colors.grey),
                   ),
                   SizedBox(
-                    height: 5,
+                    height: 10,
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.timer_outlined,
-                        size: 20,
-                      ),
-                      Row(
-                        children: [
-                          Text(video['video_length'].toStringAsFixed(1)),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text('ثانیه')
-                        ],
+                      Expanded(
+                        child: Container(
+                          height: 30,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: video['video_affects'].length,
+                              itemBuilder: (ctx, index) {
+                                return Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 8),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: bgButtonYellow.withOpacity(0.4)),
+                                    margin:
+                                        const EdgeInsets.only(top: 3, left: 5),
+                                    child: Text(video['video_affects'][index]));
+                              }),
+                        ),
                       )
                     ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 30,
+                    child: Wrap(
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.fitness_center,
+                                color: bgDarkColor,
+                                size: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  video['video_exercise_time'].toString(),
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.timer_outlined,
+                                color: bgDarkColor,
+                                size: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 7),
+                                child: Text(
+                                  video['video_length'].toStringAsFixed(1),
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 3,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                'ثانیه',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

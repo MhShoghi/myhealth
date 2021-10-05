@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health/config/Helper.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/screens/home_page/home_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,25 +18,22 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<String> _getAuthToken() async {
+  Future<bool> _checkExistAuthToken() async {
     final SharedPreferences prefs = await _prefs;
 
-    return prefs.getString('auth_token').toString();
+    return prefs.containsKey('auth_token');
   }
 
   @override
   void initState() {
     super.initState();
 
-    // ignore: unnecessary_null_comparison
-    _getAuthToken().then((token) => token.isNotEmpty && token != null
-        ? {
-            SnackBar(
-              content: Text('خوش آمدید'),
-            ).show(context),
-            Navigator.of(context).push(_homeScreenRoute()),
-          }
-        : null);
+    _checkExistAuthToken().then((value) => {
+          value
+              ? Helper.navigate(
+                  duration: 0, route: _homeScreenRoute(), context: context)
+              : null
+        });
   }
 
   @override

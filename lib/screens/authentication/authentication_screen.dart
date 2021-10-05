@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:health/config/colors.dart';
-import 'package:health/screens/authentication/body.dart';
+import 'package:health/screens/authentication/components/body.dart';
 
 class AuthenticationScreen extends StatelessWidget {
   @override

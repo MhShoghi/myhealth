@@ -39,18 +39,18 @@ dependencies:
   animated_text_kit:
   shared_preferences:
   page_transition:
-  adaptive_theme: ^2.2.0
+  custom_check_box:
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: 
+  flutter_launcher_icons:
 
 flutter_icons:
   android: true
   ios: true
-  image_path: 'assets/icons/logo.png'
+  image_path: "assets/icons/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

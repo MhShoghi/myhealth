@@ -183,41 +183,73 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    children: [
-                                      CircleAvatar(
-                                          backgroundColor: Colors.redAccent,
-                                          radius: 40,
-                                          child: Text(
-                                            bmiResult['range']['range_status'],
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w300),
-                                          )),
-                                      SizedBox(
-                                        height: 10,
+                                  Flexible(
+                                    flex: 1,
+                                    child: Container(
+                                      width: double.infinity,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              width: double.infinity,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.blueAccent),
+                                              child: Center(
+                                                child: Text(
+                                                  bmiResult['range']
+                                                      ['range_status'],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
+                                              )),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('وضعیت جسمانی')
+                                        ],
                                       ),
-                                      Text('وضعیت')
-                                    ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      CircleAvatar(
-                                          backgroundColor: Colors.blue,
-                                          radius: 40,
-                                          child: Text(
-                                            bmiResult['bmi'].toString(),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w300),
-                                          )),
-                                      SizedBox(
-                                        height: 10,
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    flex: 1,
+                                    child: Container(
+                                      width: double.infinity,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              width: double.infinity,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                              decoration: BoxDecoration(
+                                                  color: redColor),
+                                              child: Center(
+                                                child: Text(
+                                                  bmiResult['bmi'].toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
+                                              )),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('نتیجه شاخص')
+                                        ],
                                       ),
-                                      Text('نتیجه')
-                                    ],
+                                    ),
                                   ),
                                 ],
                               )),
@@ -271,6 +303,7 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
           borderRadius: BorderRadius.circular(10.0)),
       child: Center(
         child: TextFormField(
+          keyboardType: TextInputType.number,
           textAlign: TextAlign.right,
           onSaved: (newValue) => weight = newValue.toString(),
           onChanged: (value) {
@@ -334,6 +367,7 @@ class _CalculateBmiBodyState extends State<CalculateBmiBody> {
           borderRadius: BorderRadius.circular(10.0)),
       child: Center(
         child: TextFormField(
+          keyboardType: TextInputType.number,
           textAlign: TextAlign.right,
           onSaved: (newValue) => height = newValue.toString(),
           onChanged: (value) {

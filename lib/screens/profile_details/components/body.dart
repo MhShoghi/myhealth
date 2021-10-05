@@ -101,6 +101,8 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
 
     var responseBody = jsonDecode(response.body);
 
+    print(responseBody);
+
     if (response.statusCode == 200) {
       setState(() {
         rangeObject.addAll(responseBody['result']['range']);
@@ -269,16 +271,23 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                         decoration:
                             BoxDecoration(color: Colors.grey.withOpacity(0.1)),
                         child: Text(
-                          userObject['user_disease_background_description'],
+                          userObject['user_disease_background_description'] ??
+                              'نامشخص',
                           textDirection: TextDirection.rtl,
                         ),
                       )
                     ],
                   )
-                : Center(
+                : Container(
+                    height: SizeConfig.screenHeight,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircularProgressIndicator(),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Text('در حال بارگذاری')
                       ],
                     ),

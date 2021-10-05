@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:health/screens/register/register_screen.dart';
 import 'package:health/screens/splash/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -10,17 +9,30 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   double opacity = 1.0;
+
+  // Set default auth token to ''
+  Future<void> _setDefaultAuthToken() async {
+    final SharedPreferences prefs = await _prefs;
+
+    if (!prefs.containsKey('auth_token')) {
+      prefs.setString('auth_token', '').then((bool success) {
+        print('auth_token now generated');
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     opacity = 0;
 
     changeOpacity();
+    _setDefaultAuthToken();
 
     Timer(
-        Duration(seconds: 4),
-        () => Navigator.of(context).push(_splashRoute()));
+        Duration(seconds: 4), () => Navigator.of(context).push(_splashRoute()));
   }
 
   changeOpacity() {
@@ -65,11 +77,9 @@ class _BodyState extends State<Body> {
   }
 }
 
-
 Route _splashRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) =>
-         SplashScreen(),
+    pageBuilder: (context, animation, secondaryAnimation) => SplashScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;

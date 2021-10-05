@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:custom_check_box/custom_check_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -51,6 +52,11 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
       background_disease_description,
       exercise_days,
       exercise_hours,
+      disease_diabet,
+      disease_liver,
+      disease_kidney,
+      disease_heart,
+      disease_lung,
       token}) async {
     final http.Response response = await http.post(
       Uri.parse(API_URL + '/users/complete'),
@@ -62,9 +68,11 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
         'age': age.toString(),
         'height': height.toString(),
         'weight': weight.toString(),
-        'disease_background': background_disease,
-        'disease_background_description':
-            background_disease_description.toString(),
+        'disease_diabet': disease_diabet,
+        'disease_kidney': disease_kidney,
+        'disease_lung': disease_lung,
+        'disease_heart': disease_heart,
+        'disease_liver': disease_liver,
         'exercise_days': exercise_days,
         'exercise_hours': exercise_hours
       }),
@@ -107,12 +115,42 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
   String age = '';
   String height = '';
   String weight = '';
-  int background_disease = 0;
-  String background_disease_description = '';
+  bool disease_diabet = false;
+  bool disease_kidney = false;
+  bool disease_lung = false;
+  bool disease_heart = false;
+  bool disease_liver = false;
+  bool disease_all = false;
   List<int> exercise_days = [];
   List<int> exercise_hours = [];
 
   List<String> errors = [];
+
+  void setAllDiseasesToTrue() {
+    setState(() {
+      disease_diabet = true;
+      disease_kidney = true;
+      disease_lung = true;
+      disease_heart = true;
+      disease_liver = true;
+      disease_all = true;
+    });
+  }
+
+  void setAllDiseasesToFalse() {
+    setState(() {
+      disease_diabet = false;
+      disease_kidney = false;
+      disease_lung = false;
+      disease_heart = false;
+      disease_liver = false;
+      disease_all = false;
+    });
+  }
+
+  void toggleDiseases() {
+    disease_all ? setAllDiseasesToFalse() : setAllDiseasesToTrue();
+  }
 
   @override
   void initState() {
@@ -164,9 +202,9 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                           height: 10,
                         ),
                         Container(
+                          width: double.infinity,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
-                          width: double.infinity,
                           decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.3),
                               borderRadius: BorderRadius.circular(10)),
@@ -175,37 +213,84 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Text(
-                                'سابقه بیماری',
+                                'سابقه بیماری دارید؟',
                                 style: TextStyle(color: Colors.black),
                               ),
-                              GroupButton(
-                                buttonWidth: SizeConfig.screenWidth > 400
-                                    ? MediaQuery.of(context).size.width * 0.15
-                                    : MediaQuery.of(context).size.width * 0.30,
-                                isRadio: true,
-                                selectedButton: 0,
-                                onSelected: (int index, isSelected) {
-                                  setState(() {
-                                    background_disease = index;
-                                  });
-                                },
-                                buttons: ["خیر", "بله"],
-                                unselectedColor: bgDarkColor,
-                                unselectedTextStyle:
-                                    TextStyle(color: Colors.white),
-                                selectedTextStyle:
-                                    TextStyle(color: Colors.black),
-                                selectedColor: bgButtonYellow,
-                                spacing: 30,
-                                borderRadius: BorderRadius.circular(10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: buildDiseaseCheckBox(
+                                        label: 'دیابت',
+                                        press: (value) {
+                                          setState(() {
+                                            disease_diabet = value;
+                                          });
+                                        },
+                                        value: disease_diabet),
+                                  ),
+                                  Flexible(
+                                      flex: 1,
+                                      child: buildDiseaseCheckBox(
+                                          label: 'قلب',
+                                          press: (value) {
+                                            setState(() {
+                                              disease_heart = value;
+                                            });
+                                          },
+                                          value: disease_heart)),
+                                  Flexible(
+                                    flex: 1,
+                                    child: buildDiseaseCheckBox(
+                                        label: 'ریه',
+                                        press: (value) {
+                                          setState(() {
+                                            disease_lung = value;
+                                          });
+                                        },
+                                        value: disease_lung),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    flex: 1,
+                                    child: buildDiseaseCheckBox(
+                                        label: 'کبد',
+                                        press: (value) {
+                                          setState(() {
+                                            disease_liver = value;
+                                          });
+                                        },
+                                        value: disease_liver),
+                                  ),
+                                  Flexible(
+                                      flex: 1,
+                                      child: buildDiseaseCheckBox(
+                                          label: 'کلیه',
+                                          press: (value) {
+                                            setState(() {
+                                              disease_kidney = value;
+                                            });
+                                          },
+                                          value: disease_kidney)),
+                                  Flexible(
+                                    flex: 1,
+                                    child: buildDiseaseCheckBox(
+                                        label: 'همه',
+                                        press: (value) => toggleDiseases(),
+                                        value: disease_all),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        buildDiseaseBackgroundFormField(),
                         SizedBox(
                           height: 10,
                         ),
@@ -250,14 +335,14 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                                 unselectedTextStyle:
                                     TextStyle(color: Colors.white),
                                 selectedTextStyle:
-                                    TextStyle(color: Colors.black),
-                                selectedColor: bgButtonYellow,
+                                    TextStyle(color: Colors.white),
+                                selectedColor: primaryColor,
                                 spacing: 10,
                                 mainGroupAlignment: MainGroupAlignment.start,
-                                buttonWidth: SizeConfig.screenWidth > 400
+                                buttonWidth: SizeConfig.screenWidth > 420
                                     ? MediaQuery.of(context).size.width * 0.15
                                     : MediaQuery.of(context).size.width * 0.35,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ],
                           ),
@@ -302,14 +387,14 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                                 unselectedTextStyle:
                                     TextStyle(color: Colors.white),
                                 selectedTextStyle:
-                                    TextStyle(color: Colors.black),
-                                selectedColor: bgButtonYellow,
+                                    TextStyle(color: Colors.white),
+                                selectedColor: primaryColor,
                                 spacing: 10,
                                 mainGroupAlignment: MainGroupAlignment.start,
-                                buttonWidth: SizeConfig.screenWidth > 400
+                                buttonWidth: SizeConfig.screenWidth > 420
                                     ? MediaQuery.of(context).size.width * 0.15
                                     : MediaQuery.of(context).size.width * 0.35,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ],
                           ),
@@ -323,11 +408,6 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                 SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                    onPressed: () {
-                      _btnController.reset();
-                    },
-                    child: Text('sdfsdf')),
                 Container(
                   width: double.infinity,
                   height: 60,
@@ -351,12 +431,31 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
                               age: age,
                               height: height,
                               weight: weight,
-                              background_disease: background_disease,
-                              background_disease_description:
-                                  background_disease_description,
                               exercise_days: exercise_days,
                               exercise_hours: exercise_hours,
+                              disease_diabet: disease_diabet,
+                              disease_heart: disease_heart,
+                              disease_lung: disease_lung,
+                              disease_liver: disease_liver,
+                              disease_kidney: disease_kidney,
                               token: token);
+                          print(age);
+                          print(height);
+                          print(weight);
+                          print('disease_diabet');
+                          print(disease_diabet);
+                          print('disease_lung');
+                          print(disease_lung);
+                          print('disease_liver');
+                          print(disease_liver);
+
+                          print('disease_kidney');
+                          print(disease_kidney);
+                          print('disease_heart');
+                          print(disease_heart);
+
+                          print(exercise_days);
+                          print(exercise_hours);
 
                           _btnController.success();
 
@@ -382,50 +481,12 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
     );
   }
 
-  Container buildDiseaseBackgroundFormField() {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(10.0)),
-      child: Center(
-        child: TextFormField(
-          maxLines: 3,
-          onSaved: (newValue) =>
-              background_disease_description = newValue.toString(),
-          onChanged: (value) {
-            return null;
-          },
-          validator: (value) {
-            return null;
-          },
-
-          // controller: controller,
-          style: TextStyle(color: Colors.black),
-
-          decoration: InputDecoration(
-            fillColor: bgButtonYellow,
-            errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent)),
-            errorStyle: TextStyle(height: 0),
-            hintText: 'سابقه بیماری خود را بنویسید',
-
-            focusedErrorBorder: InputBorder.none,
-            hintStyle: TextStyle(color: Colors.black),
-            contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(10),
-                gapPadding: 10),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.circular(10),
-                gapPadding: 10),
-            // suffixIcon: CustomSuffixIcon(
-            //   'assets/icons/Mail.svg',
-            // ),
-          ),
-        ),
-      ),
+  Row buildDiseaseCheckBox({required label, required press, value = false}) {
+    return Row(
+      children: [
+        CustomCheckBox(borderRadius: 3, value: value, onChanged: press),
+        Text(label),
+      ],
     );
   }
 
@@ -439,6 +500,7 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
           borderRadius: BorderRadius.circular(10.0)),
       child: Center(
         child: TextFormField(
+          keyboardType: TextInputType.number,
           onSaved: (newValue) => weight = newValue.toString(),
           onChanged: (value) {
             if (value.isNotEmpty && errors.contains(kWeightNullError)) {
@@ -469,7 +531,7 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent)),
             errorStyle: TextStyle(height: 0),
-            hintText: 'وزن',
+            hintText: 'وزن (کیلوگرم)',
 
             focusedErrorBorder: InputBorder.none,
             hintStyle: TextStyle(color: Colors.black),
@@ -501,6 +563,7 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
           borderRadius: BorderRadius.circular(10.0)),
       child: Center(
         child: TextFormField(
+          keyboardType: TextInputType.number,
           onSaved: (newValue) => height = newValue.toString(),
           onChanged: (value) {
             if (value.isNotEmpty && errors.contains(kHeightNullError)) {
@@ -531,7 +594,7 @@ class _CompleteRegisterBodyState extends State<CompleteRegisterBody> {
             errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent)),
             errorStyle: TextStyle(height: 0),
-            hintText: 'قد',
+            hintText: 'قد (سانتی متر)',
 
             focusedErrorBorder: InputBorder.none,
             hintStyle: TextStyle(color: Colors.black),

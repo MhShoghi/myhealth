@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:health/config/colors.dart';
 import 'package:health/config/constants.dart';
 
 import 'package:health/screens/video_details/components/video_detail_item.dart';
 import 'package:health/screens/video_details/components/video_tag_item.dart';
+import 'package:health/screens/videos/components/body.dart';
+import 'package:health/size_config.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoDetailsBody extends StatefulWidget {
@@ -30,7 +33,6 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
 
     _initializeVideoPlayerFuture = _controller.initialize();
 
-    _controller.play();
     super.initState();
   }
 
@@ -92,6 +94,14 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
                   SizedBox(
                     height: 10,
                   ),
+                  Row(
+                    children: [
+                      for (var i in video['video_affects'])
+                        VideoTagItem(
+                          label: i,
+                        )
+                    ],
+                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -102,11 +112,20 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
                         // If the VideoPlayerController has finished initialization, use
                         // the data it provides to limit the aspect ratio of the video.
                         return Container(
-                          child: AspectRatio(
-                            aspectRatio: _controller.value.aspectRatio,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 4,
+                                offset: Offset(1, 2))
+                          ], borderRadius: BorderRadius.circular(10)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: AspectRatio(
+                              aspectRatio: _controller.value.aspectRatio,
 
-                            // Use the VideoPlayer widget to display the video.
-                            child: VideoPlayer(_controller),
+                              // Use the VideoPlayer widget to display the video.
+                              child: VideoPlayer(_controller),
+                            ),
                           ),
                         );
                       } else {
@@ -126,29 +145,62 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
                       }
                     },
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.play_circle),
-                        onPressed: () {
-                          _controller.play();
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.pause_circle),
-                        onPressed: () {
-                          _controller.pause();
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.stop_rounded),
-                        onPressed: () {
-                          _controller.initialize();
-                          _controller.play();
-                        },
-                      ),
-                    ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 10, bottom: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          alignment: Alignment.topCenter,
+                          tooltip: 'پخش ویدیو',
+                          icon: Icon(
+                            Icons.play_circle,
+                            color: primaryColor,
+                            size: getProportionateScreenWidth(36),
+                          ),
+                          onPressed: () {
+                            _controller.play();
+                          },
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          tooltip: 'توقف لحظه ای ویدیو',
+                          icon: Icon(
+                            Icons.pause_circle,
+                            color: primaryColor,
+                            size: getProportionateScreenWidth(36),
+                          ),
+                          onPressed: () {
+                            _controller.pause();
+                          },
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        IconButton(
+                          tooltip: 'توقف کامل ویدیو',
+                          icon: Icon(
+                            Icons.stop_rounded,
+                            color: primaryColor,
+                            size: getProportionateScreenWidth(36),
+                          ),
+                          onPressed: () {
+                            _controller.initialize();
+                            _controller.play();
+                          },
+                        ),
+                      ],
+                    ),
                   )
                 ],
               ),

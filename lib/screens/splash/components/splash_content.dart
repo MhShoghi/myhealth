@@ -7,20 +7,28 @@ class SplashContent extends StatelessWidget {
   const SplashContent({
     Key? key,
     required this.image,
+    required this.text,
   }) : super(key: key);
 
   final String image;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Spacer(
-          flex: 2,
-        ),
         Image.asset(
           image,
           width: getProportionateScreenWidth(265),
           height: getProportionateScreenHeight(235),
+          fit: BoxFit.contain,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        Text(
+          text,
+          style: TextStyle(fontSize: 16),
+          textAlign: TextAlign.center,
         )
       ],
     );

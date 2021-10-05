@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:health/components/form_error.dart';
+import 'package:health/components/snackbar.dart';
+import 'package:health/config/Helper.dart';
+import 'package:health/routes/routes.dart';
+import 'package:health/screens/forget_password/forget_password_screen.dart';
 import 'package:health/screens/home_page/home_page_screen.dart';
 import 'package:health/screens/register/register_screen.dart';
 import 'package:http/http.dart' as http;
@@ -57,6 +61,11 @@ class _LoginBodyState extends State<LoginBody> {
 
   String selectedDate = Jalali.now().toJalaliDateTime();
 
+  Future<void> _setPhoneNumber({required phoneNumber}) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString('user_phone_number', phoneNumber).then((bool success) {});
+  }
+
   Future<dynamic> loginUser({
     username,
     password,
@@ -74,52 +83,55 @@ class _LoginBodyState extends State<LoginBody> {
 
     var decodedResponse = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
+    print(response.statusCode);
+
+    if (response.statusCode == 200 &&
+        decodedResponse['userProfileIsComplete'] == true) {
       _btnController.success();
 
       _setAuthToken(token: decodedResponse['result']['auth_token']);
 
-      SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'ورود موفقیت آمیز',
-              style: TextStyle(fontFamily: 'Dana'),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Icon(
-              Icons.login,
-              color: primaryColor,
-            ),
-          ],
-        ),
-      ).show(context);
-      Timer(Duration(seconds: 3),
-          () => {Navigator.of(context).push(_homePageRoute())});
+      buildSnackBar(
+              text: 'ورود موفقیت آمیز',
+              icon: Icons.login,
+              iconColor: primaryColor)
+          .show(context);
+
+      Helper.navigate(duration: 3, route: _homePageRoute(), context: context);
+    } else if (response.statusCode == 200 &&
+        decodedResponse['userProfileIsComplete'] == false) {
+      _btnController.success();
+
+      _setAuthToken(token: decodedResponse['result']['auth_token']);
+
+      buildSnackBar(
+              text: 'اطلاعات شما هنوز کامل نشده است',
+              icon: Icons.info_outlined,
+              iconColor: bgButtonYellow)
+          .show(context);
+
+      Helper.navigate(
+          duration: 3, route: completeRegisterRoute(), context: context);
+    } else if (response.statusCode == 201) {
+      _btnController.success();
+
+      _setPhoneNumber(phoneNumber: username);
+
+      buildSnackBar(
+              text: 'حساب کاربری شما فعال نیست',
+              icon: Icons.domain_verification,
+              iconColor: bgButtonYellow)
+          .show(context);
+      Helper.navigate(
+          duration: 3, route: authenticateRoute(), context: context);
     } else {
       _btnController.error();
 
-      SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              decodedResponse['errors'][0]['message'],
-              style: TextStyle(fontFamily: 'Dana'),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Icon(
-              Icons.notifications,
-              color: Colors.redAccent,
-            ),
-          ],
-        ),
-      ).show(context);
+      buildSnackBar(
+              text: decodedResponse['errors'][0]['message'],
+              icon: Icons.notifications,
+              iconColor: redColor)
+          .show(context);
       Timer(Duration(seconds: 2), () => {_btnController.reset()});
     }
   }
@@ -215,6 +227,24 @@ class _LoginBodyState extends State<LoginBody> {
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).push(_registerRoute());
+                                },
+                              )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'رمز عبور خود را فراموش کرده اید؟',
+                              ),
+                              TextButton(
+                                child: Text(
+                                  'بازیابی',
+                                  style: TextStyle(color: primaryColor),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .push(_forgetPasswordRoute());
                                 },
                               )
                             ],
@@ -360,6 +390,23 @@ class _LoginBodyState extends State<LoginBody> {
 Route _registerRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => RegisterScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(1.0, 0.0);
+      const end = Offset.zero;
+      final tween = Tween(begin: begin, end: end);
+      final offsetAnimation = animation.drive(tween);
+      return SlideTransition(
+        position: offsetAnimation,
+        child: child,
+      );
+    },
+  );
+}
+
+Route _forgetPasswordRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        ForgetPasswordScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
