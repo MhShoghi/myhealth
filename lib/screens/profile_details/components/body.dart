@@ -192,6 +192,60 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                       SizedBox(
                         height: 10,
                       ),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'سابقه بیماری',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(fontSize: 20),
+                          )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        children: [
+                          buildDisease(
+                              label: 'دیابت: ',
+                              value: userObject['user_disease_diabet']
+                                  ? 'بله'
+                                  : 'خیر'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          buildDisease(
+                              label: 'قلب: ',
+                              value: userObject['user_disease_heart']
+                                  ? 'بله'
+                                  : 'خیر'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          buildDisease(
+                              label: 'کبد: ',
+                              value: userObject['user_disease_liver']
+                                  ? 'بله'
+                                  : 'خیر'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          buildDisease(
+                              label: 'کلیه: ',
+                              value: userObject['user_disease_kidney']
+                                  ? 'بله'
+                                  : 'خیر'),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          buildDisease(
+                              label: 'ریه: ',
+                              value: userObject['user_disease_lung']
+                                  ? 'بله'
+                                  : 'خیر'),
+                          SizedBox(
+                            height: 10,
+                          )
+                        ],
+                      ),
                       Divider(),
                       Align(
                           alignment: Alignment.centerRight,
@@ -254,28 +308,6 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                       SizedBox(
                         height: 20,
                       ),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            'سابقه بیماری',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(fontSize: 20),
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 12),
-                        width: double.infinity,
-                        decoration:
-                            BoxDecoration(color: Colors.grey.withOpacity(0.1)),
-                        child: Text(
-                          userObject['user_disease_background_description'] ??
-                              'نامشخص',
-                          textDirection: TextDirection.rtl,
-                        ),
-                      )
                     ],
                   )
                 : Container(
@@ -294,6 +326,28 @@ class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
                   ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container buildDisease({label, value}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+      decoration: BoxDecoration(
+          color: lightOrangeColor, borderRadius: BorderRadius.circular(5)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(value),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            textDirection: TextDirection.rtl,
+          ),
+        ],
       ),
     );
   }

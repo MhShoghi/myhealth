@@ -24,15 +24,28 @@ class _SplashScreenState extends State<SplashScreen> {
     return prefs.containsKey('auth_token');
   }
 
+  Future<String?> _getAuthToken() async {
+    final SharedPreferences prefs = await _prefs;
+
+    return prefs.getString('auth_token');
+  }
+
   @override
   void initState() {
     super.initState();
 
-    _checkExistAuthToken().then((value) => {
-          value
-              ? Helper.navigate(
-                  duration: 0, route: _homeScreenRoute(), context: context)
-              : null
+    _checkExistAuthToken().then((exist) => {
+          if (exist)
+            {
+              _getAuthToken().then((value) => {
+                    value!.isNotEmpty && value.length > 0
+                        ? Helper.navigate(
+                            duration: 0,
+                            route: _homeScreenRoute(),
+                            context: context)
+                        : null
+                  })
+            }
         });
   }
 
