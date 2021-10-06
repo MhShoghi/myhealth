@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:health/components/form_error.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/size_config.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:snack/snack.dart';
-
 import '../../../config/constants.dart';
 
 class ProfileDetailsBody extends StatefulWidget {
@@ -20,14 +18,11 @@ class ProfileDetailsBody extends StatefulWidget {
 
 class _ProfileDetailsBodyState extends State<ProfileDetailsBody> {
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
+
   List<String> errors = [];
   Map userObject = {};
   Map rangeObject = {};
   bool loading = false;
-
-  final _formKey = GlobalKey<FormState>();
 
   Future<String> _getAuthToken() async {
     final SharedPreferences prefs = await _prefs;

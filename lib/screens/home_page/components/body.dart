@@ -169,7 +169,9 @@ class _HomePageBodyState extends State<HomePageBody> {
                               backgroundColor: Colors.red,
                               radius: SizeConfig.screenWidth * 0.05,
                               backgroundImage: NetworkImage(
-                                   userObject['user_profile_image'] != null? '$API_BASE_URL/profiles/$profileImageLink' : userDefaultProfile(),
+                                  userObject['user_profile_image'] != null
+                                      ? '$API_BASE_URL/profiles/$profileImageLink'
+                                      : userDefaultProfile(),
                                   scale: 1)),
                           SizedBox(
                             width: 10,
@@ -492,11 +494,14 @@ class VideoBox extends StatelessWidget {
         width:
             SizeConfig.screenWidth > 420 ? size.width * 0.4 : size.width * 0.6,
         height: SizeConfig.screenWidth > 420
-            ? size.width * 0.15
+            ? size.width * 0.50
             : size.height * 0.45,
         margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
           color: Colors.white,
+          boxShadow: [
+            BoxShadow(blurRadius: 4, color: Colors.grey.withOpacity(0.3))
+          ],
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -504,7 +509,7 @@ class VideoBox extends StatelessWidget {
           children: [
             Container(
               height: SizeConfig.screenWidth > 420
-                  ? size.width * 0.15
+                  ? size.width * 0.17
                   : size.width * 0.35,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(

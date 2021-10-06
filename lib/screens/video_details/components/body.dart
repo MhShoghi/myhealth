@@ -38,7 +38,6 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
 
     _controller.pause();

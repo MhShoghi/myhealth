@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/screens/profile_details/components/body.dart';

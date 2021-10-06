@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:health/config/colors.dart';
@@ -25,7 +24,6 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   // Values
 
-  File? image;
   // ignore: non_constant_identifier_names
   String _user_name = '';
   // ignore: non_constant_identifier_names
@@ -33,9 +31,9 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   String _user_phone_number = '';
 
-  String user_profile_image = '';
+  String user_profile_image =
+      API_BASE_URL + '/thumbnails/' + 'Okwd0n-1633456912460.png';
 
-  bool _user_gender = false;
   bool loading = false;
 
   Future<void> _removeAuthToken() async {
@@ -80,7 +78,10 @@ class _ProfileBodyState extends State<ProfileBody> {
         _user_name = user['user_name'];
         _user_family = user['user_family'];
         _user_phone_number = user['user_phone_number'];
-        user_profile_image = user['user_profile_image'];
+
+        user_profile_image = user['user_profile_image'].toString().isNotEmpty
+            ? API_BASE_URL + '/profiles/' + user['user_profile_image']
+            : API_BASE_URL + '/thumbnails/' + 'Okwd0n-1633456912460.png';
       });
     } else {
       setState(() {
@@ -111,7 +112,6 @@ class _ProfileBodyState extends State<ProfileBody> {
 
   @override
   Widget build(BuildContext context) {
-    var profileImageLink = !loading ? user_profile_image : '';
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -124,15 +124,11 @@ class _ProfileBodyState extends State<ProfileBody> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      InkWell(
-                        onTap: () {},
-                        child: CircleAvatar(
-                            backgroundColor: Colors.red,
-                            radius: SizeConfig.screenWidth * 0.08,
-                            backgroundImage: NetworkImage(
-                                '$API_BASE_URL/profiles/$profileImageLink',
-                                scale: 1)),
-                      ),
+                      CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: SizeConfig.screenWidth * 0.08,
+                          backgroundImage:
+                              NetworkImage(user_profile_image, scale: 1)),
                       SizedBox(
                         width: 10,
                       ),

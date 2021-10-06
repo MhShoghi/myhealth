@@ -275,7 +275,7 @@ class _ChangeBmiBodyState extends State<ChangeBmiBody> {
 
           // controller: controller,
           style: TextStyle(color: Colors.black),
-
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(
             fillColor: bgButtonYellow,
             errorBorder: OutlineInputBorder(
@@ -338,7 +338,7 @@ class _ChangeBmiBodyState extends State<ChangeBmiBody> {
 
           // controller: controller,
           style: TextStyle(color: Colors.black),
-
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(
             fillColor: bgButtonYellow,
             errorBorder: OutlineInputBorder(
@@ -347,6 +347,7 @@ class _ChangeBmiBodyState extends State<ChangeBmiBody> {
             hintText: 'قد',
 
             focusedErrorBorder: InputBorder.none,
+
             hintStyle: TextStyle(color: Colors.black),
             contentPadding: EdgeInsets.symmetric(horizontal: 42, vertical: 20),
             enabledBorder: OutlineInputBorder(

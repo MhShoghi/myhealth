@@ -67,7 +67,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _getAuthToken()

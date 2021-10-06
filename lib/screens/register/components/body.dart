@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:health/components/snackbar.dart';
 import 'package:health/config/Helper.dart';
 import 'package:health/routes/routes.dart';
-import 'package:health/screens/authentication/authentication_screen.dart';
-import 'package:health/screens/login/login_screen.dart';
-import 'package:health/size_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:group_button/group_button.dart';
@@ -129,7 +126,6 @@ class _BodyState extends State<Body> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 

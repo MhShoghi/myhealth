@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:health/config/Helper.dart';
-import 'package:health/config/colors.dart';
 import 'package:health/screens/home_page/home_page_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../size_config.dart';
 import './components/body.dart';
-import 'package:snack/snack.dart';
 
 class SplashScreen extends StatefulWidget {
   static String routeName = '/splash';

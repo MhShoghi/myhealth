@@ -1,11 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:health/config/colors.dart';
 import 'package:health/config/constants.dart';
-
-import 'package:health/screens/home_page/components/body.dart';
 import 'package:health/screens/video_details/video_details_screen.dart';
 import 'package:health/size_config.dart';
 import 'package:http/http.dart' as http;
@@ -79,7 +76,6 @@ class _VideoBodyState extends State<VideoBody> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
