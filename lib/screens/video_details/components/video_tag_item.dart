@@ -13,6 +13,7 @@ class VideoTagItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
         child: Container(
+      margin: const EdgeInsets.only(left: 10, right: 10),
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
       decoration: BoxDecoration(
           color: lighBlueColor, borderRadius: BorderRadius.circular(10)),

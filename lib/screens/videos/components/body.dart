@@ -108,15 +108,14 @@ class _VideoBodyState extends State<VideoBody> {
                             child: CircularProgressIndicator(),
                           )
                         : GridView.builder(
-                            physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: SizeConfig.screenWidth > 420
-                                  ? 2 / 2.5
-                                  : 2 / 4,
-                              crossAxisSpacing: 20.0,
+                                  ? 2 / 2.8
+                                  : 2 / 4.4,
+                              crossAxisSpacing: 10.0,
                               mainAxisSpacing: 20.0,
                             ),
                             itemCount: videosList.length,
@@ -216,7 +215,7 @@ class VideoItem extends StatelessWidget {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Row(
                       children: [

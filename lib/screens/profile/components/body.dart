@@ -79,7 +79,7 @@ class _ProfileBodyState extends State<ProfileBody> {
         _user_family = user['user_family'];
         _user_phone_number = user['user_phone_number'];
 
-        user_profile_image = user['user_profile_image'].toString().isNotEmpty
+        user_profile_image = user['user_profile_image'] != null
             ? API_BASE_URL + '/profiles/' + user['user_profile_image']
             : API_BASE_URL + '/thumbnails/' + 'Okwd0n-1633456912460.png';
       });

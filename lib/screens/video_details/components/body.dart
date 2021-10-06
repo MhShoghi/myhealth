@@ -94,6 +94,7 @@ class _VideoDetailsBodyState extends State<VideoDetailsBody> {
                     height: 10,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (var i in video['video_affects'])
                         VideoTagItem(
